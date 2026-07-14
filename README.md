@@ -178,8 +178,21 @@ pip install flask scikit-learn numpy pandas
 ### Steps
 
 ```bash
-# Clone or download the project
-cd algerian-forest-fires
+# Clone the repository
+git clone https://github.com/shivangibhat53-cmd/fwi-ridge-predictor.git
+cd fwi-ridge-predictor
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# On Mac/Linux
+source .venv/bin/activate
+
+# On Windows
+.venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
 
 # Run the Flask app
 python application.py
