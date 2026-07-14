@@ -107,7 +107,7 @@ FWI-prediction-with-ridge-regressor/
 ### Key Exploratory Data Analysis Insights
 
 #### 1. Temperature vs. Fire Occurrence Density
-![Temperature Density Plot](images/temperature_density.png)
+![Temperature Density Plot](images/Temperature_density.png)
 
 #### 2. Fire Danger Zone Matrix (Temperature vs. Relative Humidity)
 ![Temperature Density Plot](images/temp_vs_rh.png)
