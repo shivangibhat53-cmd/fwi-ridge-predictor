@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algerian Forest Fire FWI Predictor</title>
+    <style>
+        /* Modern Dark Theme Base Styles */
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(249, 115, 22, 0.1);
+            color: #fb923c;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 0 16px 0;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 15px;
+            max-width: 600px;
+            margin: 0 auto 24px auto;
+            line-height: 1.6;
+        }
+
+        /* NEW: Regional Coverage Section Styles */
+        .region-section {
+            background-color: rgba(15, 23, 42, 0.3);
+            border: 1px dashed #475569;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .region-title {
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            align-self: center;
+            letter-spacing: 0.5px;
+        }
+
+        .region-item {
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .region-number {
+            color: #f97316;
+            font-weight: 800;
+            margin-right: 4px;
+        }
+
+        /* 3-Column Architecture Grid Layout */
+        .info-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 36px;
+            text-align: left;
+        }
+
+        .info-card {
+            flex: 1;
+            background-color: rgba(15, 23, 42, 0.4);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        h3 {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        .card-desc {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 0 0 16px 0;
+            line-height: 1.4;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .highlight-lbl {
+            color: #94a3b8;
+        }
+
+        /* Inner output card element */
+        .output-box {
+            background-color: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            padding: 12px;
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .output-box-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #f97316;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .output-box-val {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Action Footer Options */
+        .actions-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            border-top: 1px solid #334155;
+            padding-top: 28px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #f97316, #f59e0b);
+            color: #0f172a;
+            font-weight: 700;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.99);
+        }
+
+        .btn-secondary {
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(71, 85, 105, 0.2);
+            border-color: #64748b;
+        }
+
+        /* Responsive Layout Collapse for Small Screens */
+        @media (max-width: 640px) {
+            .info-grid, .actions-group, .region-section {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Top Badge -->
+        <div class="badge">Machine Learning Engine</div>
+
+        <!-- Main Title -->
+        <h1>Algerian Forest Fire Predictor</h1>
+        
+        <!-- Subtitle Context description -->
+        <p class="subtitle">
+            An interactive framework utilizing an optimized Ridge Regression model to determine daily fire danger risks based on localized meteorological conditions.
+        </p>
+
+        <!-- ADDED: Regional Coverage Quick-Reference Bar -->
+        <div class="region-section">
+            <div class="region-title"> Data Coverage Zone:</div>
+            <div class="region-item"><span class="region-number">Region 1:</span> Bejaia Region</div>
+            <div class="region-item"><span class="region-number">Region 2:</span> Sidi-Bel Abbes Region</div>
+        </div>
+
+        <!-- Information System Content Architecture Grid Layout -->
+        <div class="info-grid">
+            
+            <!-- Box 1: Core Weather Inputs -->
+            <div class="info-card">
+                
+                <h3>Weather Factors</h3>
+                <p class="card-desc">Atmospheric metrics driving instant moisture calculation changes.</p>
+                <ul>
+                    <li>• <span class="highlight-lbl">Temperature:</span> Midday air max (°C)</li>
+                    <li>• <span class="highlight-lbl">RH:</span> Relative Humidity (%)</li>
+                    <li>• <span class="highlight-lbl">Ws:</span> Wind velocity (km/h)</li>
+                    <li>• <span class="highlight-lbl">Rain:</span> Daily precipitation (mm)</li>
+                </ul>
+            </div>
+
+            <!-- Box 2: Fire Behavior Codes -->
+            <div class="info-card">
+                
+                <h3>Fuel Moisture</h3>
+                <p class="card-desc">Indexes tracking cumulative forest floor dryness depth layer profiles.</p>
+                <ul>
+                    <li>• <span class="highlight-lbl">FFMC:</span> Fine Fuel moisture index</li>
+                    <li>• <span class="highlight-lbl">DMC:</span> Shallow duff deep root layer</li>
+                    <li>• <span class="highlight-lbl">ISI:</span> Initial rate fire spread code</li>
+                </ul>
+            </div>
+
+            <!-- Box 3: Model Target Output Info -->
+            <div class="info-card">
+                <h3>Model Output</h3>
+                <p class="card-desc">The core objective score generated by the predictive engine pipeline.</p>
+                <div class="output-box">
+                    <span class="output-box-title">Predicts Target</span>
+                    <span class="output-box-val">FWI Value Score</span>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Call to Action Redirect Footer Navigation Group -->
+        <div class="actions-group">
+            <a href="{{ url_for('predict_datapoint') }}" class="btn-primary">Launch Prediction Tool</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FWI Prediction Console</title>
+    <style>
+        /* Modern Dark Theme Base Styles */
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 540px; /* FIX: Made slightly wider for cleaner columns */
+            padding: 32px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 13px;
+            margin: 0 0 28px 0;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Responsive Grid Row System */
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* FIX: Prevents children from expanding past flex limits */
+        }
+
+        label {
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            white-space: nowrap; /* Keeps labels on a clean single line */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        input {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #ffffff;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+            width: 100%; /* FIX: Forces input to match the flex box width */
+            min-width: 0; /* FIX: Overrides the browser default input box width */
+            box-sizing: border-box; /* FIX: Includes padding inside width calculations */
+        }
+
+        input:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+
+        /* Action Buttons */
+        button {
+            width: 100%;
+            background: linear-gradient(to right, #f97316, #f59e0b);
+            border: none;
+            border-radius: 10px;
+            color: #0f172a;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            opacity: 0.95;
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        /* Results Output Box */
+        .results-box {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #334155;
+            text-align: center;
+        }
+
+        .results-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .results-value {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 32px;
+            background-color: rgba(249, 115, 22, 0.1);
+            color: #f97316;
+            font-size: 36px;
+            font-weight: 900;
+            border-radius: 12px;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(51, 65, 85, 0.4);
+            color: #64748b;
+            font-size: 12px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        
+        <h1>FWI Analysis Input</h1>
+        <p class="subtitle">Provide the structural values below to calculate the Fire Weather Index output.</p>
+
+        <!-- Main Form Element -->
+        <form action="{{ url_for('predict_datapoint') }}" method="post">
+            
+            <!-- Row 1: Weather Fundamentals -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Temperature (°C)</label>
+                    <input type="text" name="Temperature" placeholder="e.g. 32" required />
+                </div>
+                <div class="form-group">
+                    <label>Relative Humidity (%)</label>
+                    <input type="text" name="RH" placeholder="e.g. 55" required />
+                </div>
+            </div>
+
+            <!-- Row 2: Air Operations -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Wind Speed (Ws)</label>
+                    <input type="text" name="Ws" placeholder="e.g. 14" required />
+                </div>
+                <div class="form-group">
+                    <label>Rainfall (mm)</label>
+                    <input type="text" name="Rain" placeholder="e.g. 0.1" required />
+                </div>
+            </div>
+
+            <!-- Row 3: Fuel Moisture Factors -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>FFMC</label>
+                    <input type="text" name="FFMC" placeholder="85.2" required />
+                </div>
+                <div class="form-group">
+                    <label>DMC</label>
+                    <input type="text" name="DMC" placeholder="12.4" required />
+                </div>
+                <div class="form-group">
+                    <label>ISI</label>
+                    <input type="text" name="ISI" placeholder="4.1" required />
+                </div>
+            </div>
+
+            <!-- Row 4: Classification Layout -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Classes State</label>
+                    <input type="text" name="Classes" placeholder="fire / not fire" required />
+                </div>
+                <div class="form-group">
+                    <label>Region Zone</label>
+                    <input type="text" name="Region" placeholder="1 or 2" required />
+                </div>
+            </div>
+
+            <button type="submit">Run Analysis Calculation</button>
+        </form>
+
+        <!-- Dynamic Output Banner Box -->
+        {% if results %}
+        <div class="results-box">
+            <div class="results-title">Calculated FWI Value Target</div>
+            <div class="results-value">{{ results }}</div>
+        </div>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}" class="back-link">← Return to Base Dashboard</a>
+
+    </div>
+
+</body>
+</html>
