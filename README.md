@@ -89,7 +89,7 @@ FWI-prediction-with-ridge-regressor/
 
 ## Machine Learning Pipeline
 
-### 1. Data Cleaning (`2_0-EDA_And_FE_Algerian_Forest_Fires.ipynb`)
+### 1. Data Cleaning (`EDA_And_FE_Algerian_Forest_Fires.ipynb`)
 
 - Stripped whitespace from column names and class labels
 - Fixed a formatting error at index 167 where ISI value was mixed into the DC column
@@ -99,20 +99,30 @@ FWI-prediction-with-ridge-regressor/
 - Removed null values and duplicates
 - Saved cleaned data to `Algerian_forest_fires_cleaned_dataset.csv`
 
-### 2. Feature Engineering & EDA (`2_0-EDA_And_FE_Algerian_Forest_Fires.ipynb`)
+### 2. Feature Engineering & EDA (`EDA_And_FE_Algerian_Forest_Fires.ipynb`)
 
 - Encoded `Classes` column: `fire` → 1, `not fire` → 0
 - Dropped `day`, `month`, `year` columns (not used in modelling)
 - Plotted density plots, pie charts, and correlation heatmaps
+### Key Exploratory Data Analysis Insights
 
+#### 1. Temperature vs. Fire Occurrence Density
+![Temperature Density Plot](images/temperature_density.png)
+
+#### 2. Fire Danger Zone Matrix (Temperature vs. Relative Humidity)
+![Temperature Density Plot](images/temp_vs_rh.png)
+
+#### 3. Fire Analysis of the Two Regions
 ![Alternative Text Descriptive Name](images/fire_anaysis_Brjaia.png)
 
 ![Alternative Text Descriptive Name](images/fire_anaysis_Sidi.png)
 
-### 3. Model Training (`3_0-Model_Training.ipynb`)
+### 3. Model Training (`Model_Training.ipynb`)
 
 - **Train/Test split:** 75% train, 25% test (`random_state=42`)
 - **Multicollinearity check:** Dropped features with correlation > 0.85 using a custom `fast_correlation()` function
+![Alternative Text Descriptive Name](images/multicollinearity.png)
+
 - **Scaling:** Applied `StandardScaler` (fit on training data only, transformed on both sets)
 - **Models evaluated:** Linear Regression, Lasso, LassoCV, Ridge, RidgeCV, ElasticNet, ElasticNetCV
 
