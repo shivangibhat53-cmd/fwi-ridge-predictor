@@ -69,8 +69,8 @@ This project uses the Algerian Forest Fires dataset to build a regression model 
 FWI-prediction-with-ridge-regressor/
 │
 ├── notebooks/                                  # Jupyter notebooks
-│   ├── 2_0-EDA_And_FE_Algerian_Forest_Fires.ipynb  # EDA and feature engineering
-│   └── 3_0-Model_Training.ipynb                    # Model training and evaluation
+│   ├── EDA_And_FE_Algerian_Forest_Fires.ipynb  # EDA and feature engineering
+│   └── Model_Training.ipynb                    # Model training and evaluation
 │
 ├── models/                                     # Saved pickle files
 │   ├── scaler.pkl                              # Saved StandardScaler
